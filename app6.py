@@ -20,10 +20,10 @@ def load_and_train():
 
     # Fill missing values
     for col in df.columns:
-        if df[col].dtype == "object":
+        if df[col].dtype == "object" or pd.api.types.is_string_dtype(df[col]):
             df[col].fillna(df[col].mode()[0], inplace=True)
-        else:
-            df[col].fillna(df[col].mean(), inplace=True)
+        elif pd.api.types.is_numeric_dtype(df[col]):
+            df[col].fillna(df[col].median(), inplace=True)
 
     # Drop irrelevant columns
     drop_cols = ['CustomerID', 'LastPurchaseDate']
